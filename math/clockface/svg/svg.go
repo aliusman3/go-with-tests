@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io"
 	"time"
+
+	"gowithtests.aliusman.net/math/clockface"
 )
 
 const (
@@ -24,24 +26,24 @@ func SVGWriter(w io.Writer, t time.Time) {
 }
 
 func secondHand(w io.Writer, t time.Time) {
-	p := makeHand(SecondHandPoint(t), secondHandLength)
+	p := makeHand(clockface.SecondHandPoint(t), secondHandLength)
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:3px;"/>`, p.X, p.Y)
 }
 
 func minuteHand(w io.Writer, t time.Time) {
-	p := makeHand(MinuteHandPoint(t), minuteHandLength)
+	p := makeHand(clockface.MinuteHandPoint(t), minuteHandLength)
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:5px;"/>`, p.X, p.Y)
 }
 
 func hourHand(w io.Writer, t time.Time) {
-	p := makeHand(HourHandPoint(t), hourHandLength)
+	p := makeHand(clockface.HourHandPoint(t), hourHandLength)
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#f00;stroke-width:7px;"/>`, p.X, p.Y)
 }
 
-func makeHand(p Point, length float64) Point {
-	p = Point{p.X * length, p.Y * length}
-	p = Point{p.X, -p.Y}
-	return Point{p.X + clockCentreX, p.Y + clockCentreY}
+func makeHand(p clockface.Point, length float64) clockface.Point {
+	p = clockface.Point{p.X * length, p.Y * length}
+	p = clockface.Point{p.X, -p.Y}
+	return clockface.Point{p.X + clockCentreX, p.Y + clockCentreY}
 }
 
 const svgStart = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
