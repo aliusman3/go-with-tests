@@ -11,6 +11,7 @@ type Point struct {
 }
 
 const secondHandLength = 90
+const minuteHandLength = 80
 const clockCentreX = 150
 const clockCentreY = 150
 
