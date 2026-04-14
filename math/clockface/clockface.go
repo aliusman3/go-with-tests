@@ -10,10 +10,13 @@ type Point struct {
 	Y float64
 }
 
-const secondHandLength = 90
-const minuteHandLength = 80
-const clockCentreX = 150
-const clockCentreY = 150
+const (
+	secondHandLength = 90
+	minuteHandLength = 80
+	hourHandLength   = 50
+	clockCentreX     = 150
+	clockCentreY     = 150
+)
 
 func SecondHand(t time.Time) Point {
 	p := secondHandPoint(t)
