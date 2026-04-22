@@ -2,12 +2,18 @@ package blogrenderer
 
 import (
 	"embed"
-	"html/template"
 	"io"
+	"text/template"
+
+	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/html"
+	"github.com/gomarkdown/markdown/parser"
 )
 
 type PostRenderer struct {
-	templ *template.Template
+	templ        *template.Template
+	mdParser     *parser.Parser
+	htmlRenderer *html.Renderer
 }
 
 func NewPostRenderer() (*PostRenderer, error) {
@@ -16,7 +22,14 @@ func NewPostRenderer() (*PostRenderer, error) {
 		return nil, err
 	}
 
-	return &PostRenderer{templ: templ}, nil
+	extensions := parser.CommonExtensions | parser.AutoHeadingIDs | parser.NoEmptyLineBeforeBlock
+	p := parser.NewWithExtensions(extensions)
+
+	htmlFlags := html.CommonFlags | html.HrefTargetBlank
+	opts := html.RendererOptions{Flags: htmlFlags}
+	renderer := html.NewRenderer(opts)
+
+	return &PostRenderer{templ: templ, mdParser: p, htmlRenderer: renderer}, nil
 }
 
 var (
@@ -25,6 +38,13 @@ var (
 )
 
 func (r *PostRenderer) Render(w io.Writer, post Post) error {
+	doc := r.mdParser.Parse([]byte(post.Body))
+	post = Post{
+		Title:       post.Title,
+		Description: post.Description,
+		Body:        string(markdown.Render(doc, r.htmlRenderer)),
+		Tags:        post.Tags,
+	}
 	if err := r.templ.ExecuteTemplate(w, "blog.gohtml", post); err != nil {
 		return err
 	}

@@ -13,8 +13,8 @@ func TestRender(t *testing.T) {
 	var (
 		aPost = blogrenderer.Post{
 			Title:       "hello world",
-			Body:        "This is a post",
 			Description: "This is a description",
+			Body:        "This is a post",
 			Tags:        []string{"go", "tdd"},
 		}
 	)
@@ -40,8 +40,8 @@ func BenchmarkRender(b *testing.B) {
 	var (
 		aPost = blogrenderer.Post{
 			Title:       "hello world",
-			Body:        "This is a post",
 			Description: "This is a description",
+			Body:        "This is a post",
 			Tags:        []string{"go", "tdd"},
 		}
 	)
