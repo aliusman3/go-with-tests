@@ -45,9 +45,9 @@ func (r *PostRenderer) Render(w io.Writer, post Post) error {
 		Body:        string(markdown.Render(doc, r.htmlRenderer)),
 		Tags:        post.Tags,
 	}
-	if err := r.templ.ExecuteTemplate(w, "blog.gohtml", post); err != nil {
-		return err
-	}
+	return r.templ.ExecuteTemplate(w, "blog.gohtml", post)
+}
 
-	return nil
+func (r *PostRenderer) RenderIndex(w io.Writer, posts []Post) error {
+	return r.templ.ExecuteTemplate(w, "index.gohtml", posts)
 }
