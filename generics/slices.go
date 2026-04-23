@@ -29,3 +29,12 @@ func Reduce[A, B any](collection []A, f func(B, A) B, initialValue B) B {
 	}
 	return result
 }
+
+func Find[T comparable](collection []T, predicate func(T) bool) (value T, found bool) {
+	for _, v := range collection {
+		if predicate(v) {
+			return v, true
+		}
+	}
+	return
+}
