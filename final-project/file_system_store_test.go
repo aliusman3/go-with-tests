@@ -21,6 +21,7 @@ func TestFileSystemStore(t *testing.T) {
 			{"Chris", 33},
 		}
 
+		got = store.GetLeague()
 		assertLeague(t, got, want)
 	})
 }
